@@ -1,90 +1,70 @@
 package com.example.tenantmanagementsystem
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
+import android.content.Intent
+import android.view.MenuItem
+import androidx.navigation.ui.onNavDestinationSelected
 import android.util.Log
-import android.widget.Toast
+import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.ui.setupWithNavController
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.tenantmanagementsystem.databinding.ActivityMainBinding
+import com.example.tenantmanagementsystem.databinding.NavHeaderBinding
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private var lastTenant: Tenant? = null
+    // The "driver" that switches Fragments inside the NavHost
+    private lateinit var navController: NavController
+    // Tells the App Bar which screens are top-level (no back arrow)
+    private lateinit var appBarConfiguration: AppBarConfiguration
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("TENANT_LIFECYCLE", "MainActivity: onCreate")
+// Create the views from activity_main.xml (Toolbar + NavHost)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        if (savedInstanceState != null) {
-            val name = savedInstanceState.getString("tenant_name")
-            val phone = savedInstanceState.getString("tenant_phone")
-            val rent = savedInstanceState.getString("tenant_rent")
-
-            if (name != null && phone != null && rent != null) {
-                val tenant = Tenant(name, phone, rent)
-                lastTenant = tenant
-                binding.tenant = tenant
-            }
-        }
-        val userEmail = intent.getStringExtra("USER_EMAIL")
-        if (userEmail != null) {
-            Toast.makeText(this, "Logged in as $userEmail", Toast.LENGTH_SHORT).show()
-        }
-
-        binding.saveButton.setOnClickListener {
-            val name = binding.tenantNameEditText.text.toString().trim()
-            val phone = binding.phoneEditText.text.toString().trim()
-            val rent = binding.rentEditText.text.toString().trim()
-
-            if (name.isEmpty()) {
-                binding.tenantNameEditText.error = "Required"
-                return@setOnClickListener
-            }
-            if (phone.isEmpty()) {
-                binding.phoneEditText.error = "Required"
-                return@setOnClickListener
-            }
-            if (rent.isEmpty()) {
-                binding.rentEditText.error = "Required"
-                return@setOnClickListener
-            }
-
-            val tenant = Tenant(name, phone, rent)
-            binding.tenant = tenant
-            lastTenant = tenant
-        }
-        binding.callButton.setOnClickListener {
-            val tenant = lastTenant
-            if (tenant == null) {
-                Toast.makeText(this, "Save a tenant first", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:${tenant.phone}"))
-            startActivity(intent)
-        }
-        binding.shareButton.setOnClickListener {
-            val tenant = lastTenant
-            if (tenant == null) {
-                Toast.makeText(this, "Save a tenant first", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            val intent = Intent(Intent.ACTION_SEND)
-            intent.type = "text/plain"
-            intent.putExtra(Intent.EXTRA_TEXT, tenant.summary())
-            startActivity(Intent.createChooser(intent, "Share tenant"))
-        }
+// 1. Use our Toolbar as the App Bar
+// toolbar ← android:id="@+id/toolbar" in activity_main.xml
+        setSupportActionBar(binding.toolbar)
+// 2. Get the NavController from the NavHost
+// nav_host_fragment ← android:id="@+id/nav_host_fragment"
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navController = navHostFragment.navController
+// 3. Connect the App Bar to navigation:
+// the title comes from each destination's android:label
+        appBarConfiguration = AppBarConfiguration(
+            setOf(R.id.dashboardFragment, R.id.addTenantFragment, R.id.viewTenantsFragment),
+            binding.drawerLayout
+        )
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        binding.navView.setupWithNavController(navController)
+        val email = intent.getStringExtra("EMAIL")
+        val headerBinding = NavHeaderBinding.bind(binding.navView.getHeaderView(0))
+        headerBinding.headerEmailTextView.text = email ?: "Signed in"
     }
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        Log.d("TENANT_LIFECYCLE", "MainActivity: onSaveInstanceState")
-
-        val tenant = lastTenant
-        if (tenant != null) {
-            outState.putString("tenant_name", tenant.name)
-            outState.putString("tenant_phone", tenant.phone)
-            outState.putString("tenant_rent", tenant.rent)
+    // 4. Make the App Bar's back arrow work
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+    // Turn main_menu.xml into menu items in the App Bar
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+    // What happens when a menu item is tapped
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_logout) {
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            return true
         }
+        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
     }
     override fun onStart() {
         super.onStart()
