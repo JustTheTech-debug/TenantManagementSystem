@@ -1,13 +1,11 @@
-package com.example.tenantmanagementsystem.ui.auth
+package com.example.tenantmanagementsystem
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
-import com.example.tenantmanagementsystem.ui.main.MainActivity
 import com.example.tenantmanagementsystem.databinding.ActivityLoginBinding
-
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     override fun onCreate(savedInstanceState: Bundle?) {

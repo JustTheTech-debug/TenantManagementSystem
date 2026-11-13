@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TenantManagementSystem">
         <activity
-            android:name=".ui.auth.LoginActivity"
+            android:name=".LoginActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
@@ -22,11 +22,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.main.MainActivity"
+            android:name=".MainActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".ui.auth.RegisterActivity"
+            android:name=".RegisterActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
     </application>
