@@ -18,7 +18,7 @@ Screens → TenantViewModel (LiveData) → TenantRepository → Room
 ## Team
 | Stage              | Member         | Admission No. | Pull request                                                         |
 |--------------------|----------------|---------------|----------------------------------------------------------------------|
-| 1 Lead             | Mutisya        | 152360        |                                                                      |
+| 1 Lead             | Brian Mutisya        | 152360        |                                                                      |
 | 2 ViewModel        | Faith Kaburu   | 189528        | (https://github.com/JustTheTech-debug/TenantManagementSystem/pull/2) |
 | 3 Room             | Eunice Wanjiku | 154722        | (https://github.com/JustTheTech-debug/TenantManagementSystem/pull/1) |
 | 4 Screens          | Lilian Kimweli | 182069        | (https://github.com/JustTheTech-debug/TenantManagementSystem/pull/3) |
