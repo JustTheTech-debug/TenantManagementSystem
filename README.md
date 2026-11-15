@@ -9,6 +9,8 @@ An Android app for landlords to record tenants, see total rent, and call tenants
 ## Architecture
 ui/ Activities, Fragments and TenantViewModel (UI layer)
 data/ Tenant, TenantDao, TenantDatabase, TenantRepository (data layer)
+
+
 Screens → TenantViewModel (LiveData) → TenantRepository → Room
 
 ## Team
