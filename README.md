@@ -1,5 +1,7 @@
 # Tenant Management System
 An Android app for landlords to record tenants, see total rent, and call tenants.
+## Download
+Latest APK: see **Releases** on the right of this page.
 ## Features
 - Register and log in
 - Dashboard with number of tenants and total rent
