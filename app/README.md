@@ -19,4 +19,4 @@ Screens → TenantViewModel (LiveData) → TenantRepository → Room
 | 3 Room             | Eunice Wanjiku | 154722        | (https://github.com/JustTheTech-debug/TenantManagementSystem/pull/1) |
 | 4 Screens          | Lilian Kimweli | 182069        | (https://github.com/JustTheTech-debug/TenantManagementSystem/pull/3) |
 | 5 Data integration | Sherly Mosoti  | 179567        | (https://github.com/JustTheTech-debug/TenantManagementSystem/pull/4) |
-| 6 Release          | George Njogu   | 189937        |                                                                      |
+| 6 Release          | George Njogu   | 189937        | (https://github.com/JustTheTech-debug/TenantManagementSystem/pull/5)                                                                   |
